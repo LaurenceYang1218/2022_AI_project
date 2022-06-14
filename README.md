@@ -52,3 +52,11 @@ We set the hyperparameter as the following:
 Finally, the experiment result is showed in the following table
 
 ![Experiment Result](experiment.png)
+
+Contribution: 
+0816138楊卓敏: 33%
+109550018郭昀: 33%
+109550105張友维: 33%
+
+Youtube Video Link: 
+https://youtu.be/-zVEz-IEFsc
