@@ -17,7 +17,7 @@ class GameDriver:
         self.options.add_argument('--ignore-ssl-errors')
         self.driver = webdriver.Chrome(options=self.options)
         self.driver.get(self.url)
-        self.body = self.driver.find_element_by_tag_name('body')
+        self.body = self.driver.find_element(by=By.TAG_NAME, value='body')
         self.directions = {
             0: Keys.UP, 
             1: Keys.DOWN,
@@ -111,8 +111,8 @@ class GameDriver:
             sleep(0.1)
         return
 
-try:        
-    newGame = GameDriver()
+newGame = GameDriver()
+try: 
     args = newGame.parse()
     newGame.play(args)
     newGame.driver.close()
