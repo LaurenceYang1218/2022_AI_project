@@ -1,7 +1,5 @@
 import numpy as np
 from MCTS_Game import MCTS_Game
-from copy import deepcopy
-
 
 class MonteCarloTreeSearch:
     def __init__(self):

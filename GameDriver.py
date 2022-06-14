@@ -7,6 +7,7 @@ from MCTS import MonteCarloTreeSearch
 from Expectimax_Game import Expectimax_Game
 from MCTS_Game import MCTS_Game
 from time import sleep
+import numpy as np
 
 class GameDriver:
     def __init__(self):
@@ -35,7 +36,7 @@ class GameDriver:
     def parse(self):
         self.parser.add_argument("--expectimax", help="execute expectimax agent", action="store_true")
         self.parser.add_argument("--mcts", help="execute lstm agent", action="store_true")
-        self.parser.add_argument("--dqn", help="execute dqn agent", action="store_true")
+        self.parser.add_argument("--random", help="execute random agent", action="store_true")
         args = self.parser.parse_args()
         if args.expectimax: 
             self.agent = Expectimax()
@@ -70,26 +71,44 @@ class GameDriver:
     def play(self, args):
         move_number = 0
         while(not self.reach):
+            if args.random:
+                board = self.getGrid()
+                for i in range(4):
+                    for j in range(4):
+                        if board[i][j] == 2048:
+                            self.reach = True
+                action = np.random.randint(0, 3)
+                if len(self.driver.find_elements(by=By.CLASS_NAME, value='game-over')) > 0:
+                    break
+
             if args.expectimax:
                 self.game.board = self.getGrid()
                 for i in range(4):
                     for j in range(4):
                         if self.game.board[i][j] == 2048:
                             self.reach = True 
-                self.game.print_board()
+                #self.game.print_board()
                 action = self.agent.get_next_action(self.game.board, self.depth)
+                if action == -1:
+                    break
             elif args.mcts:
+                board = self.getGrid()
+                for i in range(4):
+                    for j in range(4):
+                        if board[i][j] == 2048:
+                            self.reach = True 
+
                 move_number += 1
                 num_of_simulations, search_length = self.get_search_param(move_number)
-                action = self.agent.get_next_action(self.getGrid(), num_of_simulations, search_length)
+                action = self.agent.get_next_action(board, num_of_simulations, search_length)
             
-            if action == -1:
-                break
+                if action == -1:
+                    break
             
             grid = self.driver.find_element(by=By.TAG_NAME, value='body')
             # self.driver.find_element(by=By.CLASS_NAME, value='grid-container').click()
             grid.send_keys(self.directions[action])
-            sleep(0.02)
+            sleep(0.1)
         return
 
 try:        

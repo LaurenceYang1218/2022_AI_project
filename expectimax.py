@@ -81,5 +81,4 @@ class Expectimax:
                     bestDirection = d
             else:
                 score = 0
-        print(bestDirection)
         return bestDirection
